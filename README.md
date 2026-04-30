@@ -74,22 +74,22 @@ SQL Server Database
 
 ## Screenshots
 ### Home Page
-![Home Page](screenshots/home.png)
+![Home Page](screenshots/home.png.png)
 
 ### Internship Listings
-![Internships](screenshots/internships.png)
+![Internships](screenshots/internships.png.png)
 
 ### Login Page
-![Login](screenshots/login.png)
+![Login](screenshots/login.png.png)
 
 ### Register Page
-![Register](screenshots/register.png)
+![Register](screenshots/register.png.png)
 
 ### Create Internship Page
-![Create](screenshots/create-internship.png)
+![Create](screenshots/create-internship.png.png)
 
 ### Edit Internship Page
-![Edit](screenshots/edit-internship.png)
+![Edit](screenshots/edit-internship.png.png)
 
 
 ---
