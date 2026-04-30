@@ -105,4 +105,4 @@ SQL Server Database
 
 ## 👨🏽‍💻 Author
 - Anele Mathabela
-- Bachelor of Science in Information Technology majoring in Software Development Graduate.
+- Bachelor of Science in Information Technology Gradute majoring in Software Development.
