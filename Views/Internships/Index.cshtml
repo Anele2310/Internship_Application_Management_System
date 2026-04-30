@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Internship_Application_Management_System.Models.Internship>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info text-center">
+        @TempData["Message"]
+    </div>
+}
+
+@{
+    ViewData["Title"] = "Internships";
+}
+
+
+<div class="container mt-4">
+    <h2 class="mb-4">Available Internships</h2>
+
+    <a asp-action="Create" class="btn btn-primary mb-3">
+        + Add Internship
+    </a>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+     
+           var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+           var applied = Context.RequestServices
+        .GetService<ApplicationDbContext>()
+        .Applications
+        .Any(a => a.InternshipId == item.Id && a.UserId == userId);
+
+             <div class="col-md-4 mb-4">
+                <div class="card shadow-lg h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Description</p>
+                        <p><strong>Location:</strong> @item.Location</p>
+                        <p><strong>Closing:</strong> @item.ClosingDate.ToShortDateString()</p>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+
+                            <form asp-controller="Applications"
+                                  asp-action="Apply"
+                                  method="post"
+                                  enctype="multipart/form-data">
+
+                                <input type="hidden" name="internshipId" value="@item.Id" />
+
+                                @if (applied)
+                                {
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        Already Applied
+                                    </button>
+                                }
+                                else
+                                {
+                                    <input type="file" name="cvFile" class="form-control mb-2" required />
+
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Apply
+                                    </button>
+                                }
+                            </form>
+                        </div>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="mt-2">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
