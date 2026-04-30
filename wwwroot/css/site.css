@@ -1,0 +1,77 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Focus styles */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.15rem rgba(37, 140, 251, 0.25);
+}
+
+/* Full page setup */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/* Background + spacing */
+body {
+    margin-bottom: 60px;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+/* Buttons */
+.btn {
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 12px;
+}
+
+/* Tables */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}

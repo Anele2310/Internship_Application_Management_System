@@ -21,27 +21,34 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var user = new IdentityUser
         {
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            UserName = model.Email,
+            Email = model.Email
+        };
 
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRolesAsync(user, new List<string> { "Admin" });
-                await _signInManager.SignInAsync(user, false);
-                return RedirectToAction("Index", "Internships");
-            }
+        var result = await _userManager.CreateAsync(user, model.Password);
 
-            foreach (var error in result.Errors)
-                ModelState.AddModelError("", error.Description);
+        if (result.Succeeded)
+        {
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return RedirectToAction("Index", "Internships");
+        }
+
+     
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError("", error.Description);
         }
 
         return View(model);
     }
-
     // LOGIN
     public IActionResult Login()
     {
@@ -66,6 +73,8 @@ public class AccountController : Controller
     }
 
     // LOGOUT
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();

@@ -1,79 +1,131 @@
 ﻿@model IEnumerable<Internship_Application_Management_System.Models.Internship>
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-info text-center">
-        @TempData["Message"]
-    </div>
-}
 
 @{
     ViewData["Title"] = "Internships";
 }
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success text-center shadow-sm">
+        @TempData["Message"]
+    </div>
+}
 
-<div class="container mt-4">
-    <h2 class="mb-4">Available Internships</h2>
+<div class="container py-5">
 
-    <a asp-action="Create" class="btn btn-primary mb-3">
-        + Add Internship
-    </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Available Internships</h2>
+            <p class="text-muted mb-0">Explore opportunities and apply today.</p>
+        </div>
 
-    <div class="row">
-        @foreach (var item in Model)
+        @if (User.IsInRole("Admin"))
         {
-     
-           var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-           var applied = Context.RequestServices
-        .GetService<ApplicationDbContext>()
-        .Applications
-        .Any(a => a.InternshipId == item.Id && a.UserId == userId);
-
-             <div class="col-md-4 mb-4">
-                <div class="card shadow-lg h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Description</p>
-                        <p><strong>Location:</strong> @item.Location</p>
-                        <p><strong>Closing:</strong> @item.ClosingDate.ToShortDateString()</p>
-
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
-
-                            <form asp-controller="Applications"
-                                  asp-action="Apply"
-                                  method="post"
-                                  enctype="multipart/form-data">
-
-                                <input type="hidden" name="internshipId" value="@item.Id" />
-
-                                @if (applied)
-                                {
-                                    <button class="btn btn-secondary btn-sm" disabled>
-                                        Already Applied
-                                    </button>
-                                }
-                                else
-                                {
-                                    <input type="file" name="cvFile" class="form-control mb-2" required />
-
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        Apply
-                                    </button>
-                                }
-                            </form>
-                        </div>
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <div class="mt-2">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
+            <a asp-action="Create" class="btn btn-primary shadow-sm">
+                + Add Internship
+            </a>
         }
     </div>
+
+    <div class="row g-4">
+
+        @foreach (var item in Model)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var applied = Context.RequestServices
+            .GetService<ApplicationDbContext>()
+            .Applications
+            .Any(a => a.InternshipId == item.Id && a.UserId == userId);
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="card border-0 shadow-sm h-100 rounded-4">
+
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="fw-bold">@item.Title</h5>
+
+                        <p class="text-muted small mb-2">
+                            📍 @item.Location
+                        </p>
+
+                        <p class="small">
+                            @item.Description
+                        </p>
+
+                        <p class="text-danger small">
+                            Closing: @item.ClosingDate.ToShortDateString()
+                        </p>
+
+                        <div class="mt-auto">
+
+                            <div class="d-grid gap-2">
+
+                                <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-outline-primary btn-sm">
+                                    View Details
+                                </a>
+
+                                <form asp-controller="Applications"
+                                      asp-action="Apply"
+                                      method="post"
+                                      enctype="multipart/form-data">
+
+                                    <input type="hidden"
+                                           name="internshipId"
+                                           value="@item.Id" />
+
+                                    @if (applied)
+                                    {
+                                        <button class="btn btn-secondary btn-sm w-100" disabled>
+                                            Already Applied
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <input type="file"
+                                               name="cvFile"
+                                               class="form-control form-control-sm mb-2"
+                                               required />
+
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm w-100">
+                                            Apply Now
+                                        </button>
+                                    }
+                                </form>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-warning btn-sm w-50">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-danger btn-sm w-50">
+                                            Delete
+                                        </a>
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
 </div>
+
